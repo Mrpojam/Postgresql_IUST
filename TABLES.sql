@@ -84,24 +84,4 @@ CREATE TABLE Enrolled_Supervisor(NID int,
                 EType VARCHAR(20),
                 year INT,
                 Accepted VARCHAR(1));
-                
-CREATE TABLE candidate_EPresident(EPresident_year INT,
-                 NID INT,
-                 vote INT,
-                 PRIMARY KEY(EPresident_year,NID));
-                 
-CREATE TABLE candidate_EParlimanet(EParlimanet_year INT,
-                 NID INT,
-                 vote INT,
-                 PRIMARY KEY(EParlimanet_year,NID));
-                 
-CREATE TABLE candidate_EExpert(EExpert_year INT,
-                 NID INT,
-                 vote INT,
-                 PRIMARY KEY(EExpert_year,NID));
-                 
-CREATE TABLE candidate_E_City_Village(EECV_year INT,
-                 NID INT,
-                   City varchar(30),
-                 vote INT,
-                 PRIMARY KEY(EECV_year,NID));
+            
