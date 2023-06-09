@@ -65,18 +65,25 @@ SELECT SUM(vote_count) as vote, NID, City, year FROM parilmanet_votes
 GROUP BY NID, city, year ORDER BY year DESC, vote DESC
 
 /*
-برنده های انتخابات هر شهر و سال را در مجلس برمیگرداند
+ ماکسیمم رای را برای هر شهر و سال در انتخابات مجلس بدست میاورد
 */
-CREATE VIEW parlimant_winners AS
-SELECT pvs.year, pvs.city, e.NID AS winner_name
-FROM (
-  SELECT year, city, MAX(vote) AS max_vote
-  FROM parlimant_votes_sum
-  GROUP BY year, city
-) AS max_votes
-JOIN parlimant_votes_sum pvs ON max_votes.year = pvs.year AND max_votes.city = pvs.city AND max_votes.max_vote = pvs.vote
-JOIN enrolled e ON pvs.nid = e.nid AND pvs.city = e.city
-ORDER BY pvs.year DESC, pvs.city;
+CREATE VIEW max_parlimant_vote AS
+SELECT MAX(vote), city, year FROM parlimant_votes_sum 
+GROUP BY year, city
+
+/*
+با استفاده از اشتراک کاندیدهای برنده مجلس را بدست میاورد
+*/
+CREATE VIEW parlimant_winner_view AS
+SELECT p.nid, p.city, p.year
+FROM parlimant_votes_sum p
+JOIN (
+  SELECT city, year, MAX(max) AS max_vote
+  FROM max_parlimant_vote
+  GROUP BY city, year
+) m
+ON p.city = m.city AND p.year = m.year AND p.vote = m.max_vote
+
 
 /*
 این ویو مشخصات هر رای خبرگان را بدست میاورد
